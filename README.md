@@ -12,3 +12,4 @@
 2. Download [jdk](https://drive.google.com/file/d/17UWQNVdBdGlyualwWX4Cc96KyZhD-lxz/view?usp=sharing) an [hadoop](https://drive.google.com/file/d/1541gbFeGZZJ5k9Qx65D04lpeNBw87rM5/view?usp=sharing)
    - copy both hadoop and jdk rpm file in hadoop_master/files/, hadoop_slaves/files/ folder
 3. Now Open **hadoop_task11.yml** , here I have written in first line **-hosts: ungrouped** because I  have'nt put localhost credentials in any group but if you have configured your master node credentials in any group in hostfile then just update the group name in **-hosts: groupname**
+4. Now run playbook by using command(ansible-playbook hadoop_task11.yml)
