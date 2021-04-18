@@ -1,0 +1,48 @@
+---
+# tasks file for hadoop_master
+
+- copy:
+    src: files/
+    dest: /root/
+- package_facts:
+        manager: "auto"
+ 
+ 
+- yum:
+     name: /root/jdk-8u171-linux-x64.rpm
+     state: present
+
+
+- command: "rpm -ivh /root/hadoop-1.2.1-1.x86_64.rpm --force"
+  when: "'hadoop' not in ansible_facts.packages"
+
+- file:
+       path: /root/{{dir_namenode}}
+       state: directory
+- blockinfile:
+        path: /etc/hadoop/hdfs-site.xml
+        insertafter: "<configuration>"
+        block: |    
+            <property>
+            <name>dfs.name.dir</name>
+            <value>{{dir_namenode}}</value>
+            </property>
+- blockinfile:
+        path: /etc/hadoop/core-site.xml
+        insertafter: "<configuration>"
+        block: |
+            <property>
+            <name>fs.default.name</name>
+            <value>hdfs://0.0.0.0:9001</value>
+            </property>
+- command: "jps"
+  register: x
+- debug:
+        var: x['stdout']
+- command: "echo y | hadoop namenode -format "
+  when: "'NameNode' not in x['stdout']"
+  ignore_errors: true
+- command: "hadoop-daemon.sh start namenode"
+  when: "'NameNode' not in x['stdout']"
+
+

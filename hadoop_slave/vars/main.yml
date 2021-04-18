@@ -1,0 +1,9 @@
+---
+# vars file for hadoop_slaveo
+
+dir_datanode: datanode
+
+
+
+
+

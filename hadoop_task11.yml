@@ -1,0 +1,9 @@
+- hosts: ungrouped
+  tasks:
+    - include_role:
+            name:  hadoop_master
+
+- hosts: slave
+  tasks:
+     - include_role:
+             name: hadoop_slave

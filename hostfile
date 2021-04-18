@@ -1,0 +1,5 @@
+localhost ansible_connection=local 
+
+[slave]
+13.126.216.66 ansible_connection=ssh ansible_user=ec2-user ansible_ssh_private_key_file=csa-key.pem
+15.206.68.16 ansible_connection=ssh ansible_user=ec2-user ansible_ssh_private_key_file=csa-key.pem

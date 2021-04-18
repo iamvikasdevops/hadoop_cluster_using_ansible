@@ -1,0 +1,47 @@
+---
+# tasks file for hadoop_slave
+
+- copy:
+    src: files/
+    dest: /root/
+- package_facts:
+        manager: "auto"
+
+
+- yum:
+     name: /root/jdk-8u171-linux-x64.rpm
+     state: present
+
+- command: "rpm -ivh /root/hadoop-1.2.1-1.x86_64.rpm --force"
+  when: "'hadoop' not in ansible_facts.packages"
+
+- file:
+       path: /root/{{dir_datanode}}
+       state: directory
+- blockinfile:
+        path: /etc/hadoop/hdfs-site.xml
+        insertafter: "<configuration>"
+        block: |
+            <property>
+            <name>dfs.data.dir</name>
+            <value>{{dir_datanode}}</value>
+            </property>
+- blockinfile:
+        path: /etc/hadoop/core-site.xml
+        insertafter: "<configuration>"
+        block: |
+            <property>
+            <name>fs.default.name</name>
+            <value>hdfs://13.233.32.245:9001</value>
+            </property>
+- command: "jps"
+  register: x
+- debug:
+        var: x.stdout_lines
+- command: "hadoop-daemon.sh start datanode"
+  when: "'DataNode' not in x['stdout']"
+
+
+
+
+
